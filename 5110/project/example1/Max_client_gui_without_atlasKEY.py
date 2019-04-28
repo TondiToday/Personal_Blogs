@@ -1,12 +1,21 @@
+from __future__ import print_function
 import socket
 import threading
 import tkinter as tk
 import tkinter.scrolledtext as tkst
+from tkinter import filedialog
 import os
 import pymongo
-client_max = pymongo.MongoClient('mongodb+srv://<name>:<password>@cluster0-rx7gn.mongodb.net/test?retryWrites=true')
+import pickle
+import os.path
+from googleapiclient.discovery import build
+import googleapiclient
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
+
+client_max = pymongo.MongoClient('mongodb://root:password1@ds149146.mlab.com:49146/5110-database')
 db = client_max['5110-database']
-collection = db['5110-collection']
+collection = db['cs5110-collection']
 
 HOST = '127.0.0.1'
 PORT = 60010
@@ -66,6 +75,7 @@ class Client(tk.Tk):
                 return frame
         print(frame_name + "NOT FOUND!")
         return None
+
 
     def login(self, user_name):
         self.__nickname = str(user_name).ljust(8)
@@ -214,8 +224,10 @@ class LoginFrame(tk.Frame):
         self.login_button = tk.Button(self, text="REGISTER", width=20, height=2, command=self.register)
         self.login_button.grid(row=4, columnspan=10, padx=10, pady=10)
 
+
         entry_name.bind('<KeyRelease-Return>', self.login_verify)
         self.login_button.bind('<Return>', self.login_verify)
+
 
     def login_verify(self):
         global username_login
@@ -366,6 +378,10 @@ class ChattingFrame(tk.Frame):
         self.send_button = tk.Button(self, text="SEND",bg="cyan", width=10, command=self.send_message_from__gui__button)
         self.send_button.grid(row=3, column=1, padx=10)
 
+        self.login_button = tk.Button(self, text='OPEN FILE', bg="cyan", width=10, command=self.UploadAction)
+        self.login_button.grid(row=5, column=1, padx=20)
+
+
         self.logout_button = tk.Button(self, text="EXIT", width=10, bg="white", command=self.logout)
         self.logout_button.grid(row=4, column=1, padx=10)
 
@@ -375,6 +391,26 @@ class ChattingFrame(tk.Frame):
 
         # prevent receive_message_window from input
         self.receive_message_window.config(state=tk.DISABLED)
+
+    def UploadAction(self):
+        filename = filedialog.askopenfilename()
+        file_metadata = {'name': filename}
+        if os.path.exists('token.pickle'):
+            with open('token.pickle', 'rb') as token:
+                creds = pickle.load(token)
+            with open('token.pickle', 'wb') as token:
+                pickle.dump(creds, token)
+        service = build('drive', 'v3', credentials=creds)
+        media = googleapiclient.http.MediaFileUpload(filename, mimetype='image/jpeg')
+        file = service.files().create(body=file_metadata, media_body=media, fields='id, webViewLink').execute()
+        self.add_message('[You  ]' + self.controller.prompt + file['webViewLink'] + '\n', "CornflowerBlue")
+
+
+        print('Selected:', filename)
+
+    def DownloadAction(self):
+        print("it worked!")
+
 
     def send_message_from__gui__button(self, event=None):
         try:
@@ -404,6 +440,8 @@ class ChattingFrame(tk.Frame):
     def logout(self, event=None):
         self.controller.__login = False
         self.controller.send_message("\exit")
+
+
 
     def add_message(self, new_message, color="black"):
         self.controller.message_line += 1
