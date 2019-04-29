@@ -10,6 +10,7 @@ import pickle
 import os.path
 from googleapiclient.discovery import build
 import googleapiclient
+import io
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
@@ -388,6 +389,8 @@ class ChattingFrame(tk.Frame):
         self.type_message_window.bind('<KeyRelease-Return>', self.send_message_from__gui)
         self.logout_button.bind('<Return>', self.logout)
         self.chatroom_member_window.bind('<Double-Button-1>', self.get_name_for_secret)
+        self.downloadButton = tk.Button(self, text='DOWNLOAD FILE', bg="cyan", width=20,
+                                        command=self.DownloadAction)
 
         # prevent receive_message_window from input
         self.receive_message_window.config(state=tk.DISABLED)
@@ -404,12 +407,30 @@ class ChattingFrame(tk.Frame):
         media = googleapiclient.http.MediaFileUpload(filename, mimetype='image/jpeg')
         file = service.files().create(body=file_metadata, media_body=media, fields='id, webViewLink').execute()
         self.add_message('[You  ]' + self.controller.prompt + file['webViewLink'] + '\n', "CornflowerBlue")
+        self.controller.message_line += 1
+        self.downloadButton = tk.Button(self, text='DOWNLOAD FILE', bg="cyan", width=20, command=self.DownloadAction(file['id']))
 
 
-        print('Selected:', filename)
 
-    def DownloadAction(self):
-        print("it worked!")
+    def DownloadAction(self, filename):
+        if os.path.exists('token.pickle'):
+            with open('token.pickle', 'rb') as token:
+                creds = pickle.load(token)
+            with open('token.pickle', 'wb') as token:
+                pickle.dump(creds, token)
+        self.downloadButton.grid(row=1, column=1, padx=10)
+        # self.downloadButton.wait_variable(filename)
+        service = build('drive', 'v3', credentials=creds)
+        request = service.files().get_media(fileId=filename)
+        fh = io.FileIO(filename, 'wb')
+        downloader = googleapiclient.http.MediaIoBaseDownload(fh, request)
+        done = False
+        while done is False:
+            status, done = downloader.next_chunk()
+            print('downloading...')
+
+
+
 
 
     def send_message_from__gui__button(self, event=None):
