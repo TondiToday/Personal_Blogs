@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d78849f6-f93e-43c4-a43e-e142948750f4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/13ZS3WFwimvcCIjgYOu7PWNugvzWUQO8m" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Max_client_gui_without_atlasKEY.py" beforeDir="false" afterPath="$PROJECT_DIR$/Max_client_gui_without_atlasKEY.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,7 +13,7 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/example1$test.coverage" NAME="test Coverage Results" MODIFIED="1556445339038" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/example1$Max_client_gui_without_atlasKEY.coverage" NAME="Max_client_gui_without_atlasKEY Coverage Results" MODIFIED="1556651419398" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/example1$Max_client_gui_without_atlasKEY.coverage" NAME="Max_client_gui_without_atlasKEY Coverage Results" MODIFIED="1556656635387" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/example1$server.coverage" NAME="server Coverage Results" MODIFIED="1556648079312" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/example1$client_gui.coverage" NAME="client_gui Coverage Results" MODIFIED="1556432937139" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
@@ -23,8 +22,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Max_client_gui_without_atlasKEY.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="232">
-              <caret line="415" lean-forward="true" selection-start-line="415" selection-end-line="415" />
+            <state relative-caret-position="272">
+              <caret line="450" column="39" selection-start-line="450" selection-start-column="39" selection-end-line="450" selection-end-column="39" />
               <folding>
                 <element signature="e#0#37#0" expanded="true" />
               </folding>
@@ -82,6 +81,8 @@
       <find>receive_message_window</find>
       <find>broadcast</find>
       <find>print</find>
+      <find>You</find>
+      <find>window.get</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -250,12 +251,12 @@
       <updated>1556432698239</updated>
       <workItem from="1556432700454" duration="25409000" />
       <workItem from="1556510811016" duration="10965000" />
-      <workItem from="1556647655749" duration="3797000" />
+      <workItem from="1556647655749" duration="8328000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="40171000" />
+    <option name="totallyTimeSpent" value="44702000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="0" width="1548" height="832" extended-state="0" />
@@ -339,8 +340,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Max_client_gui_without_atlasKEY.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="415" lean-forward="true" selection-start-line="415" selection-end-line="415" />
+        <state relative-caret-position="272">
+          <caret line="450" column="39" selection-start-line="450" selection-start-column="39" selection-end-line="450" selection-end-column="39" />
           <folding>
             <element signature="e#0#37#0" expanded="true" />
           </folding>

@@ -410,9 +410,10 @@ class ChattingFrame(tk.Frame):
             self.downloadButton.grid(row=1, column=1, padx=10)
 
     def downloadFile(self):
-        if str(self.type_message_window).startswith("[File ]"):
-            self.downloadButton = tk.Button(self, text='DOWNLOAD FILE', bg="cyan", width=20,
-                                                command=self.DownloadAction(message[:83]))
+        print("i got here", str(self.receive_message_window.get("1.0", tk.END))[-34:])
+        message = str(self.receive_message_window.get("1.0", tk.END))[-34:]
+        self.downloadButton = tk.Button(self, text='DOWNLOAD FILE', bg="cyan", width=20,
+                                                command=self.DownloadAction(message))
 
     def UploadAction(self):
         global downloadVar
@@ -428,7 +429,8 @@ class ChattingFrame(tk.Frame):
         media = googleapiclient.http.MediaFileUpload(filename, mimetype='image/jpeg')
         global file
         file = service.files().create(body=file_metadata, media_body=media, fields='id, webViewLink').execute()
-        self.add_message('[File  ]' + self.controller.prompt + file['webViewLink'] + '\n', "CornflowerBlue")
+        self.add_message('[You  ]' + self.controller.prompt + file['webViewLink'] + '\n', "CornflowerBlue")
+        self.add_message('[File  ]' + self.controller.prompt + file['id'] + '\n', "CornflowerBlue")
         self.controller.message_line += 1
         self.downloadButton = tk.Button(self, text='DOWNLOAD FILE', bg="cyan", width=20, command=self.DownloadAction(file['id']))
 
@@ -446,7 +448,7 @@ class ChattingFrame(tk.Frame):
         self.downloadButton.grid(row=1, column=1, padx=10)
         service = build('drive', 'v3', credentials=creds)
         request = service.files().get_media(fileId=filename)
-        fh = io.FileIO(filename, 'wb')
+        fh = io.FileIO("downloaded file", 'wb')
         downloader = googleapiclient.http.MediaIoBaseDownload(fh, request)
         print('downloading...')
 
