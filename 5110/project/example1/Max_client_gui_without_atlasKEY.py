@@ -448,7 +448,7 @@ class ChattingFrame(tk.Frame):
         self.downloadButton.grid(row=1, column=1, padx=10)
         service = build('drive', 'v3', credentials=creds)
         request = service.files().get_media(fileId=filename)
-        fh = io.FileIO("downloaded file", 'wb')
+        fh = io.FileIO("downloadedfile.jpg", 'wb')
         downloader = googleapiclient.http.MediaIoBaseDownload(fh, request)
         print('downloading...')
 
