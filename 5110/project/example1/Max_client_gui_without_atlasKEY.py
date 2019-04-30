@@ -345,6 +345,8 @@ class LoginFrame(tk.Frame):
 
 
 class ChattingFrame(tk.Frame):
+    global downloadVar
+    downloadVar = True
     def __init__(self, parent, controller, test_max):
         tk.Frame.__init__(self, parent)
         self.controller = controller
@@ -389,13 +391,32 @@ class ChattingFrame(tk.Frame):
         self.type_message_window.bind('<KeyRelease-Return>', self.send_message_from__gui)
         self.logout_button.bind('<Return>', self.logout)
         self.chatroom_member_window.bind('<Double-Button-1>', self.get_name_for_secret)
-        self.downloadButton = tk.Button(self, text='DOWNLOAD FILE', bg="cyan", width=20,
-                                        command=self.DownloadAction)
-
+        print(downloadVar)
+        self.downloadButton = tk.Button(self, text='DOWNLOAD FILE', bg="cyan", width=20, command=self.downloadButtons)
+        self.downloadButton.grid(row=1, column=1, padx=10)
         # prevent receive_message_window from input
         self.receive_message_window.config(state=tk.DISABLED)
 
+    def downloadButtons(self):
+        if downloadVar is True:
+            print("in downloadButtons function", downloadVar)
+            self.downloadButton = tk.Button(self, text='DOWNLOAD FILE', bg="cyan", width=20,
+                                            command=self.downloadFile)
+            self.downloadButton.grid(row=1, column=1, padx=10)
+        else:
+            print("in downloadButtons function", downloadVar)
+            self.downloadButton = tk.Button(self, text='DOWNLOAD FILE', bg="cyan", width=20,
+                                            command=self.DownloadAction(file['id']))
+            self.downloadButton.grid(row=1, column=1, padx=10)
+
+    def downloadFile(self):
+        if str(self.type_message_window).startswith("[File ]"):
+            self.downloadButton = tk.Button(self, text='DOWNLOAD FILE', bg="cyan", width=20,
+                                                command=self.DownloadAction(message[:83]))
+
     def UploadAction(self):
+        global downloadVar
+        downloadVar = False
         filename = filedialog.askopenfilename()
         file_metadata = {'name': filename}
         if os.path.exists('token.pickle'):
@@ -405,29 +426,29 @@ class ChattingFrame(tk.Frame):
                 pickle.dump(creds, token)
         service = build('drive', 'v3', credentials=creds)
         media = googleapiclient.http.MediaFileUpload(filename, mimetype='image/jpeg')
+        global file
         file = service.files().create(body=file_metadata, media_body=media, fields='id, webViewLink').execute()
-        self.add_message('[You  ]' + self.controller.prompt + file['webViewLink'] + '\n', "CornflowerBlue")
+        self.add_message('[File  ]' + self.controller.prompt + file['webViewLink'] + '\n', "CornflowerBlue")
         self.controller.message_line += 1
         self.downloadButton = tk.Button(self, text='DOWNLOAD FILE', bg="cyan", width=20, command=self.DownloadAction(file['id']))
 
 
 
     def DownloadAction(self, filename):
+        global downloadVar
+        downloadVar = False
+        print(downloadVar)
         if os.path.exists('token.pickle'):
             with open('token.pickle', 'rb') as token:
                 creds = pickle.load(token)
             with open('token.pickle', 'wb') as token:
                 pickle.dump(creds, token)
         self.downloadButton.grid(row=1, column=1, padx=10)
-        # self.downloadButton.wait_variable(filename)
         service = build('drive', 'v3', credentials=creds)
         request = service.files().get_media(fileId=filename)
         fh = io.FileIO(filename, 'wb')
         downloader = googleapiclient.http.MediaIoBaseDownload(fh, request)
-        done = False
-        while done is False:
-            status, done = downloader.next_chunk()
-            print('downloading...')
+        print('downloading...')
 
 
 
@@ -465,6 +486,8 @@ class ChattingFrame(tk.Frame):
 
 
     def add_message(self, new_message, color="black"):
+        global downloadVar
+        downloadVar = True
         self.controller.message_line += 1
         temp = "tag_" + str(self.controller.message_line)
         self.receive_message_window.tag_config(temp, foreground=color)
